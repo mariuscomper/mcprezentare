@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marius Comper | International Editor & Digital Strategist</title>
+    
+    <!-- Social Meta Tags -->
+    <meta property="og:title" content="Marius Comper - International Editor">
+    <meta property="og:description" content="Bridging the gap between algorithmic news and journalistic integrity. London-based Digital Strategist.">
+    <meta property="og:image" content="https://ui-avatars.com/api/?name=Marius+Comper&background=050505&color=3b82f6&size=512&bold=true">
+    <meta property="og:type" content="website">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Editorial (Playfair), Tech (JetBrains), UI (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'news-black': '#050505',
+                        'news-card': '#0a0a0a',
+                        'news-border': '#262626',
+                        'accent-blue': '#3b82f6', // Tech/Trust Blue
+                        'accent-gold': '#d4af37', // Editorial Prestige
+                        'text-main': '#e5e5e5',
+                        'text-muted': '#a3a3a3',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'marquee': 'marquee 45s linear infinite',
+                        'orbit': 'orbit 25s linear infinite',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        orbit: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+        
+        /* High-End Noise Texture */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.035;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 40;
+            mix-blend-mode: overlay;
+        }
+
+        /* Card Styling */
+        .bento-card {
+            background: #0a0a0a;
+            border: 1px solid #262626;
+            border-radius: 1px; /* Editorial sharp edges */
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.4s ease, transform 0.4s ease;
+        }
+        
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .bento-card:hover {
+            border-color: #404040;
+            transform: translateY(-2px);
+        }
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Text Selection */
+        ::selection {
+            background: #3b82f6;
+            color: #000;
+        }
+
+        /* Orbit Animation System */
+        .orbit-system {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .orbit-track {
+            position: absolute;
+            border: 1px dashed rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+        .orbit-planet {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform-origin: 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reveal-on-scroll { opacity: 0; }
+        
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #a3a3a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="noise-overlay"></div>
+
+    <!-- Floating Navigation -->
+    <nav class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+        <div class="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-2 py-2 flex items-center gap-1 shadow-2xl max-w-fit">
+            
+            <!-- Brand -->
+            <a href="#" class="px-4 py-2 font-mono text-xs font-bold tracking-widest hover:text-accent-blue transition-colors flex items-center gap-2">
+                <span class="w-2 h-2 bg-accent-blue rounded-full"></span>
+                MC_PROFILE
+            </a>
+            
+            <div class="h-4 w-[1px] bg-white/10 mx-1"></div>
+            
+            <!-- Links -->
+            <div class="hidden md:flex gap-1">
+                <a href="#ethos" class="px-4 py-2 text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all" data-i18n="nav.ethos">Ethos</a>
+                <a href="#timeline" class="px-4 py-2 text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all" data-i18n="nav.timeline">Timeline</a>
+                <a href="#writings" class="px-4 py-2 text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all" data-i18n="nav.writings">Writings</a>
+            </div>
+
+            <div class="h-4 w-[1px] bg-white/10 mx-1 hidden md:block"></div>
+
+            <!-- Language Toggle -->
+            <div class="flex bg-white/5 rounded-full p-1">
+                <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-[10px] font-mono rounded-full bg-white text-black transition-all">EN</button>
+                <button onclick="setLanguage('ro')" id="btn-ro" class="px-3 py-1 text-[10px] font-mono rounded-full text-gray-400 hover:text-white transition-all">RO</button>
+            </div>
+            
+            <!-- LinkedIn External -->
+            <a href="https://www.linkedin.com/in/marius-comper/" target="_blank" class="ml-2 w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center text-white hover:bg-blue-600 transition-colors">
+                <i class="fa-brands fa-linkedin-in text-xs"></i>
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 md:px-8 pt-32 pb-20 relative z-10">
+
+        <!-- HERO SECTION -->
+        <header class="mb-28 animate-fade-in-up">
+            <div class="flex flex-col lg:flex-row justify-between items-end gap-12 border-b border-white/10 pb-12">
+                <div class="relative">
+                    <div class="inline-flex items-center gap-3 mb-6 border border-accent-blue/20 bg-accent-blue/5 px-4 py-1.5 rounded-full">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-blue opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-blue"></span>
+                        </span>
+                        <span class="font-mono text-[10px] text-accent-blue tracking-[0.2em] uppercase" data-i18n="hero.status">Live from London</span>
+                    </div>
+                    <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl leading-[0.9] tracking-tight text-white">
+                        Marius<br>
+                        <span class="italic text-gray-600 font-light">Comper.</span>
+                    </h1>
+                </div>
+                
+                <!-- Editorial Pitch -->
+                <div class="max-w-xl text-right lg:text-left pt-8 lg:pt-0">
+                    <p class="text-2xl md:text-3xl text-gray-200 font-serif leading-tight mb-6" data-i18n="hero.quote">
+                        "Information must be neutral, accessible, and precise."
+                    </p>
+                    <div class="h-[1px] w-24 bg-accent-blue mb-6 ml-auto lg:ml-0"></div>
+                    <p class="text-sm md:text-base text-text-muted font-light leading-relaxed" data-i18n="hero.bio">
+                        An International Editor bridging the gap between 
+                        <strong class="text-white font-normal">newsroom culture</strong> and 
+                        <strong class="text-white font-normal">engineering logic</strong>. 
+                        Currently at NewsNow, ensuring that in a world of automated feeds, the human standard for truth prevails.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Ticker Tape -->
+            <div class="w-full overflow-hidden border-b border-white/10 py-4 bg-news-card/30 backdrop-blur-sm">
+                <div class="animate-marquee whitespace-nowrap flex gap-16 items-center opacity-60 hover:opacity-100 transition-opacity duration-500">
+                    <!-- Ticker Item 1 -->
+                    <span class="font-mono text-xs text-gray-400 uppercase tracking-widest flex items-center gap-3">
+                        <i class="fa-solid fa-bolt text-accent-blue text-[10px]"></i> 
+                        <span data-i18n="ticker.1">Breaking News Architecture</span>
+                    </span>
+                    <!-- Ticker Item 2 -->
+                    <span class="font-mono text-xs text-gray-400 uppercase tracking-widest flex items-center gap-3">
+                        <i class="fa-solid fa-code text-accent-blue text-[10px]"></i> 
+                        <span data-i18n="ticker.2">Between Bytecode & Bylines</span>
+                    </span>
+                    <!-- Ticker Item 3 -->
+                    <span class="font-mono text-xs text-gray-400 uppercase tracking-widest flex items-center gap-3">
+                        <i class="fa-solid fa-eye text-accent-blue text-[10px]"></i> 
+                        <span data-i18n="ticker.3">Nunquam Dormio</span>
+                    </span>
+                    <!-- Ticker Item 4 -->
+                    <span class="font-mono text-xs text-gray-400 uppercase tracking-widest flex items-center gap-3">
+                        <i class="fa-solid fa-check-double text-accent-blue text-[10px]"></i> 
+                        <span data-i18n="ticker.4">Fact-Checking Strategy</span>
+                    </span>
+                     <!-- Repeat for loop smoothness -->
+                     <span class="font-mono text-xs text-gray-400 uppercase tracking-widest flex items-center gap-3">
+                        <i class="fa-solid fa-bolt text-accent-blue text-[10px]"></i> 
+                        <span data-i18n="ticker.1">Breaking News Architecture</span>
+                    </span>
+                    <span class="font-mono text-xs text-gray-400 uppercase tracking-widest flex items-center gap-3">
+                        <i class="fa-solid fa-code text-accent-blue text-[10px]"></i> 
+                        <span data-i18n="ticker.2">Between Bytecode & Bylines</span>
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ETHOS SECTION -->
+        <section id="ethos" class="mb-24 grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 rounded-lg overflow-hidden reveal-on-scroll">
+            <div class="bg-news-black p-10 group hover:bg-[#0c0c0c] transition-colors">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 text-accent-blue group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-scale-balanced text-xl"></i>
+                </div>
+                <h3 class="font-serif text-xl text-white mb-3" data-i18n="ethos.1.title">Algorithmic Neutrality</h3>
+                <p class="text-sm text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors" data-i18n="ethos.1.desc">
+                    Fighting bias in automated systems. Ensuring that code serves the truth, not the echo chamber.
+                </p>
+            </div>
+            <div class="bg-news-black p-10 group hover:bg-[#0c0c0c] transition-colors">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 text-accent-blue group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-eye text-xl"></i>
+                </div>
+                <h3 class="font-serif text-xl text-white mb-3" data-i18n="ethos.2.title">"Nunquam Dormio"</h3>
+                <p class="text-sm text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors" data-i18n="ethos.2.desc">
+                    An active principle. A vigilance for global events and a refusal to let misinformation slip through the cracks.
+                </p>
+            </div>
+            <div class="bg-news-black p-10 group hover:bg-[#0c0c0c] transition-colors">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 text-accent-blue group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-globe text-xl"></i>
+                </div>
+                <h3 class="font-serif text-xl text-white mb-3" data-i18n="ethos.3.title">Cultural Diversity</h3>
+                <p class="text-sm text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors" data-i18n="ethos.3.desc">
+                    Believing that exposure to diverse perspectives—via social media or news—enriches the human experience.
+                </p>
+            </div>
+        </section>
+
+        <!-- BENTO GRID -->
+        <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[minmax(200px,auto)]">
+
+            <!-- 1. Main Status Card -->
+            <div class="bento-card col-span-1 md:col-span-2 row-span-2 p-8 md:p-12 flex flex-col justify-between group">
+                <div class="absolute right-0 top-0 w-96 h-96 bg-accent-blue/5 rounded-full blur-[100px] group-hover:bg-accent-blue/10 transition-all duration-700"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="font-mono text-[10px] text-accent-blue border border-accent-blue/30 bg-accent-blue/5 px-3 py-1 rounded uppercase tracking-wider">Current Role</span>
+                        <i class="fa-solid fa-network-wired text-gray-700 text-3xl group-hover:text-white transition-colors duration-500"></i>
+                    </div>
+                    <h3 class="font-serif text-4xl md:text-5xl mb-6 text-white leading-tight" data-i18n="card.main.title">The International Editor</h3>
+                    <p class="text-gray-400 text-base leading-relaxed max-w-lg" data-i18n="card.main.desc">
+                        At <strong>NewsNow</strong>, Marius defines the logic behind the news. He manages teams across borders and calibrates the engine that millions rely on. It's a role that demands both technical literacy and deep editorial wisdom.
+                    </p>
+                </div>
+                
+                <div class="relative z-10 mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+                     <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></div>
+                        <span class="font-mono text-xs text-gray-500 uppercase tracking-widest">System: Active</span>
+                    </div>
+                    <span class="font-serif italic text-xs text-gray-600">London HQ</span>
+                </div>
+            </div>
+
+            <!-- 2. Roots & Voice -->
+            <div class="bento-card col-span-1 md:col-span-2 lg:col-span-1 p-8 flex flex-col justify-center">
+                <h4 class="font-mono text-[10px] text-gray-500 mb-8 uppercase tracking-widest border-b border-white/5 pb-2" data-i18n="card.roots.header">Origins & Impact</h4>
+                <ul class="space-y-6">
+                    <li class="group cursor-default">
+                        <div class="flex items-center gap-3 mb-1">
+                            <i class="fa-solid fa-flask text-gray-600 group-hover:text-accent-blue transition-colors text-xs"></i>
+                            <span class="block text-white font-serif text-lg" data-i18n="card.roots.1.title">Science Translator</span>
+                        </div>
+                        <span class="text-xs text-gray-500 pl-6 block" data-i18n="card.roots.1.desc">Ex-Editor-in-Chief, Descoperă.ro</span>
+                    </li>
+                    <li class="group cursor-default">
+                        <div class="flex items-center gap-3 mb-1">
+                            <i class="fa-solid fa-users text-gray-600 group-hover:text-accent-blue transition-colors text-xs"></i>
+                            <span class="block text-white font-serif text-lg" data-i18n="card.roots.2.title">Digital Pioneer</span>
+                        </div>
+                        <span class="text-xs text-gray-500 pl-6 block" data-i18n="card.roots.2.desc">Content Manager, GSP.ro</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 3. Cosmic Visualization (Replacing charts) -->
+            <div class="bento-card col-span-1 md:col-span-1 row-span-2 bg-[#080808] flex items-center justify-center relative min-h-[300px]">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#151515] to-transparent opacity-50"></div>
+                
+                <div class="orbit-system animate-[orbit_40s_linear_infinite]">
+                    <!-- Core -->
+                    <div class="absolute w-4 h-4 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] z-20"></div>
+                    
+                    <!-- Ring 1 -->
+                    <div class="orbit-track w-32 h-32 border-gray-800"></div>
+                    <div class="orbit-planet" style="transform: rotate(0deg) translateX(64px) rotate(0deg);">
+                        <span class="text-[9px] font-mono bg-news-card border border-gray-800 px-1.5 py-0.5 rounded text-gray-400">Ethics</span>
+                    </div>
+                    
+                    <!-- Ring 2 -->
+                    <div class="orbit-track w-56 h-56 border-gray-800 opacity-60"></div>
+                    <div class="orbit-planet" style="transform: rotate(120deg) translateX(112px) rotate(-120deg);">
+                        <span class="text-[9px] font-mono bg-news-card border border-accent-blue/30 text-accent-blue px-1.5 py-0.5 rounded">Algorithm</span>
+                    </div>
+                    <div class="orbit-planet" style="transform: rotate(240deg) translateX(112px) rotate(-240deg);">
+                        <span class="text-[9px] font-mono bg-news-card border border-gray-800 px-1.5 py-0.5 rounded text-gray-400">Curator</span>
+                    </div>
+                </div>
+                
+                <div class="absolute bottom-6 text-center w-full">
+                    <span class="font-mono text-[9px] text-gray-700 uppercase tracking-widest">Core Universe</span>
+                </div>
+            </div>
+
+            <!-- 4. Civic Duty -->
+            <div class="bento-card col-span-1 md:col-span-2 p-8 flex items-center justify-between bg-gradient-to-r from-[#0f0f0f] to-[#050505] group">
+                <div class="max-w-sm z-10">
+                    <h4 class="font-serif text-2xl text-white group-hover:text-accent-gold transition-colors" data-i18n="card.civic.title">Superscrieri Jury</h4>
+                    <p class="text-sm text-gray-400 mt-3 leading-relaxed" data-i18n="card.civic.desc">
+                        Since 2018, evaluating excellence in non-fiction writing. Supporting narratives that drive truth and social change in Romania.
+                    </p>
+                    <a href="https://www.ffff.ro/premiile-superscrieri/" target="_blank" class="inline-flex items-center mt-4 text-xs font-mono text-accent-gold hover:underline">
+                        <span data-i18n="card.civic.link">VISIT SUPERSCRIERI</span> <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                    </a>
+                </div>
+                <div class="absolute right-8 top-1/2 -translate-y-1/2 text-gray-800 group-hover:text-accent-gold/20 transition-colors duration-500">
+                    <i class="fa-solid fa-gavel text-8xl opacity-20"></i>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TIMELINE SECTION -->
+        <section id="timeline" class="mt-32 max-w-5xl mx-auto px-4 reveal-on-scroll">
+            <div class="flex items-baseline gap-6 mb-16 border-b border-white/10 pb-6">
+                <h2 class="font-serif text-4xl text-white" data-i18n="timeline.header">Career Trajectory</h2>
+                <span class="font-mono text-xs text-accent-blue animate-pulse">● LOG_VIEW</span>
+            </div>
+
+            <div class="relative border-l border-white/10 pl-8 md:pl-12 space-y-20">
+                
+                <!-- Node 2020 -->
+                <div class="relative group">
+                    <div class="absolute -left-[5px] md:-left-[53px] top-2 h-2.5 w-2.5 bg-accent-blue rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)] ring-4 ring-[#050505]"></div>
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 mb-2">
+                            <h3 class="text-2xl font-serif text-white group-hover:text-accent-blue transition-colors" data-i18n="timeline.1.role">International Editor</h3>
+                            <span class="font-mono text-xs text-accent-blue border border-accent-blue/20 px-2 py-0.5 rounded">2020 — Present</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono">NewsNow • London, UK</p>
+                        <div class="text-gray-400 text-sm md:text-base leading-relaxed max-w-3xl space-y-2 pl-4 border-l border-white/5" data-i18n="timeline.1.desc">
+                            <p>Strategic oversight of global content operations. Key achievements include launching dedicated regional editions and defining "Gold Standard" parameters for algorithmic source selection.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 2014 -->
+                <div class="relative group">
+                    <div class="absolute -left-[5px] md:-left-[53px] top-2 h-2.5 w-2.5 bg-gray-800 rounded-full ring-4 ring-[#050505] group-hover:bg-white transition-colors"></div>
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 mb-2">
+                            <h3 class="text-2xl font-serif text-white group-hover:text-gray-200 transition-colors" data-i18n="timeline.2.role">The London Ascent</h3>
+                            <span class="font-mono text-xs text-gray-600 border border-gray-800 px-2 py-0.5 rounded">2014 — 2020</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono">NewsNow • Senior Editorial Associate</p>
+                        <div class="text-gray-400 text-sm md:text-base leading-relaxed max-w-3xl pl-4 border-l border-white/5" data-i18n="timeline.2.desc">
+                            <p>Relocated to the UK and rapidly advanced by mastering the aggregator's internal mechanisms. Implemented rigorous filters for source quality and combated sensationalism.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 2011 -->
+                <div class="relative group">
+                    <div class="absolute -left-[5px] md:-left-[53px] top-2 h-2.5 w-2.5 bg-gray-800 rounded-full ring-4 ring-[#050505] group-hover:bg-white transition-colors"></div>
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 mb-2">
+                            <h3 class="text-2xl font-serif text-white group-hover:text-gray-200 transition-colors" data-i18n="timeline.3.role">Editor-in-Chief</h3>
+                            <span class="font-mono text-xs text-gray-600 border border-gray-800 px-2 py-0.5 rounded">2011 — 2014</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono">Descoperă.ro (Mediafax) • Bucharest</p>
+                        <div class="text-gray-400 text-sm md:text-base leading-relaxed max-w-3xl pl-4 border-l border-white/5" data-i18n="timeline.3.desc">
+                            <p>Led Romania's premier science portal. Pioneered "Explanatory Journalism" for the digital age, mentoring a new wave of science reporters.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW NODE: 2003 GSP -->
+                 <div class="relative group">
+                    <div class="absolute -left-[5px] md:-left-[53px] top-2 h-2.5 w-2.5 bg-gray-800 rounded-full ring-4 ring-[#050505] group-hover:bg-white transition-colors"></div>
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 mb-2">
+                            <h3 class="text-2xl font-serif text-white group-hover:text-gray-200 transition-colors" data-i18n="timeline.4.role">Digital Formative Years</h3>
+                            <span class="font-mono text-xs text-gray-600 border border-gray-800 px-2 py-0.5 rounded">2003 — 2010</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono">GSP.ro (Gazeta Sporturilor) • Bucharest</p>
+                        <div class="text-gray-400 text-sm md:text-base leading-relaxed max-w-3xl pl-4 border-l border-white/5" data-i18n="timeline.4.desc">
+                            <p>The formative years at <strong>GSP.ro</strong>. Working in the trenches of early digital media, managing real-time sports content and building the first major online communities in Romania.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- WRITINGS (Curated List with REAL LINKS) -->
+        <section id="writings" class="mt-32 border-t border-white/10 pt-20 reveal-on-scroll">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
+                <h2 class="font-serif text-4xl md:text-5xl text-white italic" data-i18n="writings.header">Selected Writings</h2>
+                <p class="text-xs font-mono text-gray-500 max-w-xs text-right" data-i18n="writings.sub">
+                    Curated essays and interviews on culture, technology, and society.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                
+                <!-- Article 1 -->
+                <a href="https://www.scena9.ro/article/interviu-jon-ronson-tech-extremism" target="_blank" class="group block">
+                    <div class="flex items-center gap-3 mb-3 text-xs font-mono text-gray-500">
+                        <span class="text-accent-blue bg-accent-blue/10 px-2 py-0.5 rounded">SCENA9</span>
+                        <span>•</span>
+                        <span>2018</span>
+                    </div>
+                    <h3 class="text-2xl font-serif text-white group-hover:text-accent-blue transition-colors leading-tight mb-3" data-i18n="art.1.title">
+                        Jon Ronson: "If I didn't work every day, I'd stare into the abyss"
+                    </h3>
+                    <p class="text-sm text-gray-400 leading-relaxed line-clamp-3 group-hover:text-gray-300" data-i18n="art.1.desc">
+                        A candid conversation about the anxiety of the modern age, public shaming, and the mechanics of fake news.
+                    </p>
+                    <div class="mt-4 flex items-center text-xs font-mono text-gray-600 group-hover:text-white transition-colors">
+                        <span data-i18n="btn.read">READ INTERVIEW</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </a>
+
+                <!-- Article 2 -->
+                <a href="https://www.descopera.ro/stiinta/11988209-cum-putem-avea-o-viata-implinita-zece-descoperiri-recente-ale-stiintei" target="_blank" class="group block">
+                    <div class="flex items-center gap-3 mb-3 text-xs font-mono text-gray-500">
+                        <span class="text-green-500 bg-green-500/10 px-2 py-0.5 rounded">DESCOPERĂ</span>
+                        <span>•</span>
+                        <span>2014</span>
+                    </div>
+                    <h3 class="text-2xl font-serif text-white group-hover:text-green-400 transition-colors leading-tight mb-3" data-i18n="art.2.title">
+                        The Science of Happiness
+                    </h3>
+                    <p class="text-sm text-gray-400 leading-relaxed line-clamp-3 group-hover:text-gray-300" data-i18n="art.2.desc">
+                        Synthesizing ten recent neurological studies to explain what actually makes a life fulfilled, moving beyond clichés.
+                    </p>
+                    <div class="mt-4 flex items-center text-xs font-mono text-gray-600 group-hover:text-white transition-colors">
+                        <span data-i18n="btn.read">READ ARTICLE</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </a>
+
+                <!-- Article 3 -->
+                <a href="https://dilemaveche.ro/sectiune/tema-saptamanii/in-cumpana-intre-doua-lumi-620812.html" target="_blank" class="group block">
+                    <div class="flex items-center gap-3 mb-3 text-xs font-mono text-gray-500">
+                        <span class="text-purple-500 bg-purple-500/10 px-2 py-0.5 rounded">DILEMA VECHE</span>
+                        <span>•</span>
+                        <span>2017</span>
+                    </div>
+                    <h3 class="text-2xl font-serif text-white group-hover:text-purple-400 transition-colors leading-tight mb-3" data-i18n="art.3.title">
+                        In the balance, between two worlds
+                    </h3>
+                    <p class="text-sm text-gray-400 leading-relaxed line-clamp-3 group-hover:text-gray-300" data-i18n="art.3.desc">
+                        An introspective essay on the Romanian diaspora identity. What does it mean to build a life in London while your roots remain in the East?
+                    </p>
+                    <div class="mt-4 flex items-center text-xs font-mono text-gray-600 group-hover:text-white transition-colors">
+                        <span data-i18n="btn.read">READ ESSAY</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </a>
+
+                <!-- Article 4 -->
+                <a href="https://www.electronicbeats.ro/interviu-marius-comper/" target="_blank" class="group block">
+                    <div class="flex items-center gap-3 mb-3 text-xs font-mono text-gray-500">
+                        <span class="text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded">ELECTRONIC BEATS</span>
+                        <span>•</span>
+                        <span>2019</span>
+                    </div>
+                    <h3 class="text-2xl font-serif text-white group-hover:text-yellow-400 transition-colors leading-tight mb-3" data-i18n="art.4.title">
+                        Diversity & Social Media
+                    </h3>
+                    <p class="text-sm text-gray-400 leading-relaxed line-clamp-3 group-hover:text-gray-300" data-i18n="art.4.desc">
+                        Arguing that despite the noise, digital platforms democratize access to cultural perspectives that were once gatekept.
+                    </p>
+                    <div class="mt-4 flex items-center text-xs font-mono text-gray-600 group-hover:text-white transition-colors">
+                        <span data-i18n="btn.read">READ INTERVIEW</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="mt-32 py-12 border-t border-white/10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+                <div>
+                    <h4 class="font-serif text-2xl text-white mb-2">Marius Comper</h4>
+                    <p class="font-mono text-xs text-gray-400">LONDON, UNITED KINGDOM</p>
+                </div>
+                
+                <div class="flex gap-6 text-gray-400">
+                    <a href="https://www.facebook.com/marius.comper" target="_blank" class="hover:text-white hover:-translate-y-1 transition-transform"><i class="fa-brands fa-facebook text-xl"></i></a>
+                    <a href="https://www.linkedin.com/in/marius-comper/" target="_blank" class="hover:text-white hover:-translate-y-1 transition-transform"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                    <a href="https://www.instagram.com/mariuscomper/" target="_blank" class="hover:text-white hover:-translate-y-1 transition-transform"><i class="fa-brands fa-instagram text-xl"></i></a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-gray-600">
+                <p>© 2025 Marius Comper. All rights reserved.</p>
+                <p class="hidden md:block">Editorial Precision × Algorithmic Logic</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- JAVASCRIPT LOGIC FOR ANIMATIONS & I18N -->
+    <script>
+        // --- Localization Data ---
+        const translations = {
+            en: {
+                "nav.ethos": "Ethos",
+                "nav.timeline": "Timeline",
+                "nav.writings": "Writings",
+                "hero.status": "LIVE FROM LONDON",
+                "hero.quote": "\"Information must be neutral, accessible, and precise.\"",
+                "hero.bio": "An International Editor bridging the gap between <strong class='text-white font-normal'>newsroom culture</strong> and <strong class='text-white font-normal'>engineering logic</strong>. Currently at NewsNow, ensuring that in a world of automated feeds, the human standard for truth prevails.",
+                "ticker.1": "Breaking News Architecture",
+                "ticker.2": "Between Bytecode & Bylines",
+                "ticker.3": "Nunquam Dormio",
+                "ticker.4": "Fact-Checking Strategy",
+                "ethos.1.title": "Algorithmic Neutrality",
+                "ethos.1.desc": "Fighting bias in automated systems. Ensuring that code serves the truth, not the echo chamber.",
+                "ethos.2.title": "\"Nunquam Dormio\"",
+                "ethos.2.desc": "An active principle. A vigilance for global events and a refusal to let misinformation slip through the cracks.",
+                "ethos.3.title": "Cultural Diversity",
+                "ethos.3.desc": "Believing that exposure to diverse perspectives—via social media or news—enriches the human experience.",
+                "card.main.title": "The International Editor",
+                "card.main.desc": "At <strong>NewsNow</strong>, Marius defines the logic behind the news. He manages teams across borders and calibrates the engine that millions rely on. It's a role that demands both technical literacy and deep editorial wisdom.",
+                "card.roots.header": "Origins & Impact",
+                "card.roots.1.title": "Science Translator",
+                "card.roots.1.desc": "Ex-Editor-in-Chief, Descoperă.ro",
+                "card.roots.2.title": "Digital Pioneer",
+                "card.roots.2.desc": "Content Manager, GSP.ro",
+                "card.civic.title": "Superscrieri Jury",
+                "card.civic.desc": "Since 2018, evaluating excellence in non-fiction writing. Supporting narratives that drive truth and social change in Romania.",
+                "card.civic.link": "VISIT SUPERSCRIERI",
+                "timeline.header": "Career Trajectory",
+                "timeline.1.role": "International Editor",
+                "timeline.1.desc": "<p>Strategic oversight of global content operations. Key achievements include launching dedicated regional editions and defining \"Gold Standard\" parameters for algorithmic source selection.</p>",
+                "timeline.2.role": "The London Ascent",
+                "timeline.2.desc": "<p>Relocated to the UK and rapidly advanced by mastering the aggregator's internal mechanisms. Implemented rigorous filters for source quality and combated sensationalism.</p>",
+                "timeline.3.role": "Editor-in-Chief",
+                "timeline.3.desc": "<p>Led Romania's premier science portal. Pioneered \"Explanatory Journalism\" for the digital age, mentoring a new wave of science reporters.</p>",
+                "timeline.4.role": "Digital Formative Years",
+                "timeline.4.desc": "<p>The formative years at <strong>GSP.ro</strong> (Gazeta Sporturilor). Working in the trenches of early digital media, managing real-time sports content and building the first major online communities in Romania.</p>",
+                "writings.header": "Selected Writings",
+                "writings.sub": "Curated essays and interviews on culture, technology, and society.",
+                "art.1.title": "Jon Ronson: \"If I didn't work every day, I'd stare into the abyss\"",
+                "art.1.desc": "A candid conversation about the anxiety of the modern age, public shaming, and the mechanics of fake news.",
+                "btn.read": "READ ARTICLE",
+                "art.2.title": "The Science of Happiness",
+                "art.2.desc": "Synthesizing ten recent neurological studies to explain what actually makes a life fulfilled, moving beyond clichés.",
+                "art.3.title": "In the balance, between two worlds",
+                "art.3.desc": "An introspective essay on the Romanian diaspora identity. What does it mean to build a life in London while your roots remain in the East?",
+                "art.4.title": "Diversity & Social Media",
+                "art.4.desc": "Arguing that despite the noise, digital platforms democratize access to cultural perspectives that were once gatekept."
+            },
+            ro: {
+                "nav.ethos": "Valori",
+                "nav.timeline": "Traseu",
+                "nav.writings": "Publicistică",
+                "hero.status": "LONDRA, UK",
+                "hero.quote": "\"Informația trebuie să fie neutră, accesibilă și precisă.\"",
+                "hero.bio": "Editor Internațional care construiește punți între <strong class='text-white font-normal'>cultura de redacție</strong> și <strong class='text-white font-normal'>logica inginerească</strong>. În prezent la NewsNow, se asigură că într-o lume a feed-urilor automate, standardul uman pentru adevăr prevalează.",
+                "ticker.1": "Arhitectura Știrilor Breaking News",
+                "ticker.2": "Între Algoritm și Editorial",
+                "ticker.3": "Nunquam Dormio",
+                "ticker.4": "Strategie Fact-Checking",
+                "ethos.1.title": "Neutralitate Algoritmică",
+                "ethos.1.desc": "Combaterea bias-ului în sistemele automate. Codul trebuie să servească adevărul, nu camerele de ecou.",
+                "ethos.2.title": "\"Nunquam Dormio\"",
+                "ethos.2.desc": "Un principiu activ: vigilența permanentă și refuzul de a lăsa dezinformarea să se strecoare.",
+                "ethos.3.title": "Diversitate Culturală",
+                "ethos.3.desc": "Credința că expunerea la perspective diverse—prin media și social media—îmbogățește experiența umană.",
+                "card.main.title": "Editor Internațional",
+                "card.main.desc": "La <strong>NewsNow</strong>, Marius definește logica din spatele știrilor. Coordonează echipe transfrontaliere și calibrează motorul pe care se bazează milioane de oameni. Un rol ce cere atât alfabetizare tehnică, cât și înțelepciune editorială.",
+                "card.roots.header": "Origini & Impact",
+                "card.roots.1.title": "Traducător de Știință",
+                "card.roots.1.desc": "Ex-Redactor-Șef, Descoperă.ro",
+                "card.roots.2.title": "Pionier Digital",
+                "card.roots.2.desc": "Content Manager, GSP.ro",
+                "card.civic.title": "Jurat Superscrieri",
+                "card.civic.desc": "Din 2018, evaluează excelența în non-ficțiune. Susține narativele care aduc adevăr și schimbare socială în România.",
+                "card.civic.link": "VEZI SUPERSCRIERI",
+                "timeline.header": "Traseu Profesional",
+                "timeline.1.role": "Editor Internațional",
+                "timeline.1.desc": "<p>Supraveghere strategică a operațiunilor globale de conținut. Realizări cheie includ lansarea edițiilor regionale dedicate și definirea parametrilor \"Gold Standard\" pentru selecția algoritmică a surselor.</p>",
+                "timeline.2.role": "Ascensiunea Londoneză",
+                "timeline.2.desc": "<p>Relocare în UK și avansare rapidă prin stăpânirea mecanismelor interne ale agregatorului. Implementarea filtrelor riguroase pentru calitatea surselor și combaterea senzaționalismului.</p>",
+                "timeline.3.role": "Redactor-Șef",
+                "timeline.3.desc": "<p>A condus cel mai important portal de știință din România. A promovat \"Jurnalismul Explicativ\" în era digitală, mentorând o nouă generație de reporteri de știință.</p>",
+                "timeline.4.role": "Anii Formativi Digitali",
+                "timeline.4.desc": "<p>Anii formativi la <strong>GSP.ro</strong> (Gazeta Sporturilor). Munca în tranșeele presei digitale timpurii, gestionând conținut sportiv în timp real și construind primele mari comunități online din România.</p>",
+                "writings.header": "Publicistică Aleasă",
+                "writings.sub": "Eseuri și interviuri curate despre cultură, tehnologie și societate.",
+                "art.1.title": "Jon Ronson: \"Dacă nu aș lucra în fiecare zi, m-aș holba la abis\"",
+                "art.1.desc": "O conversație sinceră despre anxietatea epocii moderne, rușinea publică și mecanismele știrilor false.",
+                "btn.read": "CITEȘTE ARTICOL",
+                "art.2.title": "Știința Fericirii",
+                "art.2.desc": "Sinteza a zece studii neurologice recente pentru a explica ce face o viață împlinită, dincolo de clișee.",
+                "art.3.title": "În cumpănă, între două lumi",
+                "art.3.desc": "Un eseu introspectiv despre identitatea diasporei românești. Ce înseamnă să-ți construiești o viață la Londra în timp ce rădăcinile rămân în Est?",
+                "art.4.title": "Diversitate & Social Media",
+                "art.4.desc": "Un argument că, în ciuda zgomotului de fond, platformele digitale democratizează accesul la perspective culturale odată inaccesibile."
+            }
+        };
+
+        function setLanguage(lang) {
+            // Update Button States
+            const btnEn = document.getElementById('btn-en');
+            const btnRo = document.getElementById('btn-ro');
+            
+            if (lang === 'en') {
+                btnEn.className = "px-3 py-1 text-[10px] font-mono rounded-full bg-white text-black transition-all";
+                btnRo.className = "px-3 py-1 text-[10px] font-mono rounded-full text-gray-400 hover:text-white transition-all";
+            } else {
+                btnRo.className = "px-3 py-1 text-[10px] font-mono rounded-full bg-white text-black transition-all";
+                btnEn.className = "px-3 py-1 text-[10px] font-mono rounded-full text-gray-400 hover:text-white transition-all";
+            }
+
+            // Update Content
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    // Fade effect for smoother transition
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.innerHTML = translations[lang][key];
+                        el.style.opacity = '1';
+                    }, 200);
+                }
+            });
+        }
+
+        // --- Intersection Observer for Reveal on Scroll ---
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('reveal-on-scroll');
+                    entry.target.classList.add('animate-fade-in-up');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+        // --- Init ---
+        // Default to English or Browser preference
+        setLanguage('en');
+
+    </script>
+</body>
+</html>
